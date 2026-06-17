@@ -1,6 +1,7 @@
 #include "MFCC.hpp"
 #include "KMedoids.hpp"
 #include "HMM.hpp"
+#include <chrono>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -143,6 +144,7 @@ void calculate_metrics(const std::vector<int>& true_labels, const std::vector<in
 }
 
 int main() {
+    auto start = std::chrono::high_resolution_clock::now();
     std::string dataset_path = "../recordings";
 
     train_system(dataset_path);
@@ -187,6 +189,10 @@ int main() {
         }
     }
     calculate_metrics(test_true, test_pred, "Test (Speaker 6)");
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "\nTotal Execution Time: " << duration.count() << " ms\n";
 
     return 0;
 }

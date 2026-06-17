@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <chrono>
 #include <filesystem>
 #include <algorithm>
 
@@ -167,6 +168,7 @@ void train_digit_models(const std::string& dataset_path) {
 }
 
 int main() {
+    auto start = std::chrono::high_resolution_clock::now();
     std::string dataset_directory = "../recordings"; // Make sure path exists
     
     std::cout << "--- Evaluating Train Data ---\n";
@@ -179,6 +181,10 @@ int main() {
     std::cout << "\n--- Calculating Test Metrics ---\n";
     auto [test_true, test_pred] = evaluate_models(dataset_directory, {6});
     calculate_metrics(test_true, test_pred, "Test");
+    
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "\nTotal Execution Time: " << duration.count() << " ms\n";
     
     return 0;
 }
